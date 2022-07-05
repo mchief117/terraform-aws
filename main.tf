@@ -13,7 +13,6 @@ provider "aws" {
 
 data "archive_file" "checkCert-zip" {
   type = "zip"
-  //source_file = "checkCert.py"
   source_file  = "${path.module}/checkCert.py"
   output_path = "${path.module}/checkCert.zip"
 }
@@ -37,12 +36,10 @@ POLICY
 
 
 resource "aws_lambda_function" "terraform_lambda" {
-  //filename         = "${path.module}/Fearless_final_copy/checkCert.zip"
   filename      = data.archive_file.checkCert-zip.output_path
   function_name = "checkCert-function"
   role          = aws_iam_role.lambda-iam.arn
   handler       = "checkCert.checkCert_handler"
-  //source_code_hash = data.archive_file.checkCert-zip.output_path
   runtime = "python3.9"
   publish = true
 }
