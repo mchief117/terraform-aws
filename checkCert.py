@@ -43,13 +43,6 @@ def checkCert_handler(event, context):
         # parse the string from the certificate into a Python datetime object
         expires = datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
 
-        # logger.debug(
-        #     "SSL cert for %s expires at %s",
-        #     hostname, expires.isoformat()
-        # )
-        #return expires - datetime.datetime.utcnow()
-        #remaining = ssl_valid_time_remaining(hostname)
-
         remaining = expires - datetime.datetime.utcnow()
 
         print('Post SSL Valid Time Remaining')
