@@ -5,7 +5,7 @@ import json
 import uuid
 # import logger
 
-GET_RAW_PATH = "/live/ssl_check"
+GET_RAW_PATH = "/ssl_check"
 
 url_id = ""
 
@@ -43,6 +43,13 @@ def checkCert_handler(event, context):
         # parse the string from the certificate into a Python datetime object
         expires = datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
 
+        # logger.debug(
+        #     "SSL cert for %s expires at %s",
+        #     hostname, expires.isoformat()
+        # )
+        #return expires - datetime.datetime.utcnow()
+        #remaining = ssl_valid_time_remaining(hostname)
+
         remaining = expires - datetime.datetime.utcnow()
 
         print('Post SSL Valid Time Remaining')
@@ -60,4 +67,6 @@ def checkCert_handler(event, context):
     else:
         #Possible other requests i.e. POST Delete
         print("Wrong API Request")
+        wrong_output = "Wrong API Request"
+        return wrong_output
 
