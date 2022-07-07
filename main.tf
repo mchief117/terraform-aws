@@ -78,8 +78,8 @@ resource "aws_apigatewayv2_route" "lambda_route" {
 
 resource "aws_apigatewayv2_stage" "lambda-stage" {
   api_id = aws_apigatewayv2_api.terraform_lambda-api.id
-  //name        = "$default"
-  name        = "live"
+  name        = "$default"
+  //name        = "live"
   auto_deploy = true
 }
 
@@ -87,7 +87,7 @@ resource "aws_apigatewayv2_deployment" "lambda_deploy" {
   api_id      = aws_apigatewayv2_api.terraform_lambda-api.id
   description = "API Deployment"
   triggers = {
-    redeployment = sha1(join(",", flatten([
+    redeployment = sha1(join(",", tolist([
       jsonencode(aws_apigatewayv2_integration.lambda_integration),
       jsonencode(aws_apigatewayv2_route.lambda_route),
     ])))
@@ -104,7 +104,7 @@ resource "aws_lambda_permission" "lambda-apigw-permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.terraform_lambda.arn
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.terraform_lambda-api.execution_arn}/${aws_apigatewayv2_route.lambda_route.route_key}"
+  //source_arn    = "${aws_apigatewayv2_api.terraform_lambda-api.execution_arn}/${aws_apigatewayv2_route.lambda_route.route_key}"
 }
 
 #Output URL
